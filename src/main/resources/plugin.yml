@@ -1,0 +1,6 @@
+name: Gender
+version: 0.1
+author: null.entity
+main: net.poweredbyhate.gender.Gender
+commands:
+  gender:
