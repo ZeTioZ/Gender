@@ -19,9 +19,11 @@ import java.util.Set;
  */
 public class Gender extends JavaPlugin {
 
-
     public void onEnable() {
         saveDefaultConfig();
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderListener(this).hook();
+        }
     }
 
     public InputStream getGenderFile() {
