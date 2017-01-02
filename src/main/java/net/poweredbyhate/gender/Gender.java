@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -19,10 +20,13 @@ import java.util.Set;
  */
 public class Gender extends JavaPlugin {
 
+    private HashMap<String, String> genderList = new HashMap<String, String>();
+    public Gurlz gurlz = new Gurlz();
+
     public void onEnable() {
         saveDefaultConfig();
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderListener(this).hook();
+            new PlaceholderListener(this, "gender").hook();
         }
     }
 
@@ -41,6 +45,12 @@ public class Gender extends JavaPlugin {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void populateList() { //I'll do this "optimization" stuff later.
+        for (String s : getGenderConfig().getKeys(false)) {
+            genderList.put(s, getGenderConfig().getString(s));
+        }
     }
 
     public Set<String> getGenders() {
@@ -75,7 +85,7 @@ public class Gender extends JavaPlugin {
                 if (getConfig().getString(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString()) == null || !Bukkit.getOfflinePlayer(args[1]).hasPlayedBefore()) {
                     sender.sendMessage("The player you have dialed is not yet in service");
                 } else {
-                    sender.sendMessage(ChatColor.GREEN + args[1]+" identify as " + ChatColor.AQUA + getConfig().getString(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString()));
+                    sender.sendMessage(ChatColor.GREEN + args[1]+" identify as " + ChatColor.AQUA + gurlz.getGender(Bukkit.getOfflinePlayer(args[1])));
                 }
             }
         }

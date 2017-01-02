@@ -10,19 +10,18 @@ public class PlaceholderListener extends EZPlaceholderHook {
 
     private Gender plugin;
 
-    public PlaceholderListener(Gender plugin) {
-        super(plugin, "gender");
+    public PlaceholderListener(Gender plugin, String placeholderName) {
+        super(plugin, placeholderName);
         this.plugin = plugin;
     }
 
     @Override
     public String onPlaceholderRequest(Player player, String s) {
-        if (player == null) {
-            return "";
-        }
+
         if (s.equalsIgnoreCase("gender")) {
-            return new Gurlz().getGender(player.getUniqueId());
+            return plugin.gurlz.getGender(player.getUniqueId());
         }
-        return null;
+
+        return "UNKNOWN";
     }
 }
