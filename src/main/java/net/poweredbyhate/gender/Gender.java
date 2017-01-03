@@ -21,10 +21,13 @@ import java.util.Set;
 public class Gender extends JavaPlugin {
 
     private HashMap<String, String> genderList = new HashMap<String, String>();
+    public static Gender instance;
     public Gurlz gurlz = new Gurlz();
 
     public void onEnable() {
         saveDefaultConfig();
+        instance = this;
+        Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }

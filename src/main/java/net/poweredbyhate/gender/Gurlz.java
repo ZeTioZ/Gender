@@ -10,14 +10,8 @@ import java.util.UUID;
  */
 public class Gurlz {
 
-    Gender gender;
-
-    public void Gurlz(Gender gender) {
-        this.gender = gender;
-    }
-
     public String getGender(UUID player) {
-        String g = gender.getConfig().getString(player.toString());
+        String g = Gender.instance.getConfig().getString(player.toString());
         if (g == null) {
             return "";
         }
@@ -25,7 +19,7 @@ public class Gurlz {
     }
 
     public String getGender(Player player) {
-        String g = gender.getConfig().getString(player.getUniqueId().toString());
+        String g = Gender.instance.getConfig().getString(player.getUniqueId().toString());
         if (g == null) {
             return "";
         }
@@ -33,7 +27,7 @@ public class Gurlz {
     }
 
     public String getGender(OfflinePlayer player) {
-        String g = gender.getConfig().getString(player.getUniqueId().toString());
+        String g = Gender.instance.getConfig().getString(player.getUniqueId().toString());
         if (g == null) {
             return "";
         }

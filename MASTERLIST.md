@@ -1,12 +1,3 @@
-package net.poweredbyhate.gender;
-
-/**
- * Created by Lax on 12/15/2016.
- */
-public class Genders {
-
-    /*
-    Master gender list
 Abimegender
 Adamasgender
 Aerogender
@@ -120,5 +111,3 @@ Venngender
 Verangender
 Vibragender
 Vocigender
-     */
-}
