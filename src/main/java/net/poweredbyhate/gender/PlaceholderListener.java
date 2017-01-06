@@ -19,7 +19,7 @@ public class PlaceholderListener extends EZPlaceholderHook {
     public String onPlaceholderRequest(Player player, String s) {
 
         if (s.equalsIgnoreCase("gender")) {
-            return plugin.gurlz.getGender(player.getUniqueId());
+            return plugin.mentalIllness.getGender(player);
         }
 
         return "UNKNOWN";

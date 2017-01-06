@@ -11,6 +11,7 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent ev) {
-        ev.setFormat(ev.getFormat().replace("{gender_gender}", Gender.instance.gurlz.getGender(ev.getPlayer()))); //why do I even bother
+        String gender = Gender.instance.mentalIllness.getGender(ev.getPlayer());
+        ev.setFormat(ev.getFormat().replace("{gender_gender}", gender).replace("%gender_gender%", gender)); //why do I even bother
     }
 }
