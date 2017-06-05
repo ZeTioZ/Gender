@@ -5,8 +5,12 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.FileUtil;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
@@ -32,7 +36,7 @@ public class Gender extends JavaPlugin {
     public FileConfiguration getGenderConfig() {
         try {
             FileConfiguration genderConfig = new YamlConfiguration();
-            genderConfig.load(getClassLoader().getResourceAsStream("genders.yml"));
+            genderConfig.load(new BufferedReader(new InputStreamReader(getClassLoader().getResourceAsStream("genders.yml"))));
             return genderConfig;
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,7 +49,7 @@ public class Gender extends JavaPlugin {
     public FileConfiguration getCommunityGenders() {
         try {
             FileConfiguration communityGenders = new YamlConfiguration();
-            communityGenders.load(getClassLoader().getResourceAsStream("cummunityGenders.yml"));
+            communityGenders.load(new BufferedReader(new InputStreamReader(getClassLoader().getResourceAsStream("cummunityGenders.yml"))));
             return communityGenders;
         } catch (IOException e) {
             e.printStackTrace();
