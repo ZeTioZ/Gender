@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
  */
 public class PlaceholderListener extends EZPlaceholderHook {
 
-    private Gender plugin;
+    private GenderPlugin plugin;
 
-    public PlaceholderListener(Gender plugin, String placeholderName) {
+    public PlaceholderListener(GenderPlugin plugin, String placeholderName) {
         super(plugin, placeholderName);
         this.plugin = plugin;
     }
@@ -19,7 +19,7 @@ public class PlaceholderListener extends EZPlaceholderHook {
     public String onPlaceholderRequest(Player player, String s) {
 
         if (s.equalsIgnoreCase("gender")) {
-            return plugin.mentalIllness.getGender(player);
+            return plugin.goMental().getPlayerGender(player);
         }
 
         return "UNKNOWN";

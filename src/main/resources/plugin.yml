@@ -1,7 +1,7 @@
 name: Gender
 version: 0.5
 author: null.entity
-main: net.poweredbyhate.gender.Gender
+main: net.poweredbyhate.gender.GenderPlugin
 softdepend: [PlaceholderAPI]
 commands:
   gender:
