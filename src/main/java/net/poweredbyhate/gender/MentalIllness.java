@@ -22,7 +22,7 @@ public class MentalIllness {
 
     public MentalIllness(GenderPlugin plugin) {
         this.plugin = plugin;
-        mentalillness = new HashMap<String, Gender>();
+        mentalillness = new HashMap<>();
     }
 
     public void imagine(Gender g) {
@@ -76,7 +76,6 @@ public class MentalIllness {
     }
 
     public void sendNonGenderNeutralMessage(Object obj, String message) {
-        System.out.println("Hello");
         if (obj instanceof Player) {
             ((Player) obj).sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;

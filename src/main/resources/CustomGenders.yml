@@ -1,0 +1,7 @@
+#Sample Gender, Please follow the format.
+#
+#genders:
+#  Male:
+#    description: "Male Gender"
+#  Female:
+#    description: "Female Gender"

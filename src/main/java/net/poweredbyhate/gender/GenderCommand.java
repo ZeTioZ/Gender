@@ -28,10 +28,10 @@ public class GenderCommand implements CommandExecutor {
 
         if (args.length == 0) {
             plugin.goMental().sendNonGenderNeutralMessage(sender, "&4-&6-&e-&2-&1-&9-&5- &c&lGender &4-&6-&e-&2-&1-&9-&5-");
-            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/list &7List all the genders");
-            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/info GENDER &7Shows info about the gender");
-            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/set GENDER &7Sets your own gender");
-            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/check PLAYER &7Checks the players gender");
+            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/gender list &7List all the genders");
+            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/gender info GENDER &7Shows info about the gender");
+            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/gender set GENDER &7Sets your own gender");
+            plugin.goMental().sendNonGenderNeutralMessage(sender, "&c/gender check PLAYER &7Checks the players gender");
             plugin.goMental().sendNonGenderNeutralMessage(sender, "&4-&6-&e-&2-&1-&9-&5-&4-&6-&e-&2-&1-&9-&5-&4-&6-&e-&2-&1-&9-&5-");
         }
 

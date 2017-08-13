@@ -32,12 +32,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
+                <version>3.0.0</version>
                 <configuration>
                     <artifactSet>
                         <includes>
                             <include>mkremins:fanciful</include>
                             <include>org.bstats:*</include>
+                            <include>org.inventivetalent.update:spigot</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -60,8 +61,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -82,6 +83,10 @@
         <repository>
             <id>bstats-repo</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>inventive-repo</id>
+            <url>http://repo.inventivetalent.org/content/groups/public/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -104,6 +109,11 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.inventivetalent.update</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 </project>
