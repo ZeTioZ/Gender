@@ -1,5 +1,5 @@
 name: Gender
-version: 1.0
+version: 1.1.2
 author: null.entity
 main: net.poweredbyhate.gender.GenderPlugin
 softdepend: [PlaceholderAPI]

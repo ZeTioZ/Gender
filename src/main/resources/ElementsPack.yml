@@ -1,0 +1,243 @@
+pack:
+  name: ElementsPack
+  author: LaxWasHere
+  website: https://www.spigotmc.org/resources/33217/
+  version: 0.1
+  enabled: false
+genders:
+  Hydrogen:
+    description: "Hydrogen Gender"
+  Helium:
+    description: "Helium Gender"
+  Lithium:
+    description: "Lithium Gender"
+  Beryllium:
+    description: "Beryllium Gender"
+  Boron:
+    description: "Boron Gender"
+  Carbon:
+    description: "Carbon Gender"
+  Nitrogen:
+    description: "Nitrogen Gender"
+  Oxygen:
+    description: "Oxygen Gender"
+  Fluorine:
+    description: "Fluorine Gender"
+  Neon:
+    description: "Neon Gender"
+  Sodium:
+    description: "Sodium Gender"
+  Magnesium:
+    description: "Magnesium Gender"
+  Aluminum:
+    description: "Aluminum Gender"
+  Silicon:
+    description: "Silicon Gender"
+  Phosphorus:
+    description: "Phosphorus Gender"
+  Sulfur:
+    description: "Sulfur Gender"
+  Chlorine:
+    description: "Chlorine Gender"
+  Argon:
+    description: "Argon Gender"
+  Potassium:
+    description: "Potassium Gender"
+  Calcium:
+    description: "Calcium Gender"
+  Scandium:
+    description: "Scandium Gender"
+  Titanium:
+    description: "Titanium Gender"
+  Vanadium:
+    description: "Vanadium Gender"
+  Chromium:
+    description: "Chromium Gender"
+  Manganese:
+    description: "Manganese Gender"
+  Iron:
+    description: "Iron Gender"
+  Cobalt:
+    description: "Cobalt Gender"
+  Nickel:
+    description: "Nickel Gender"
+  Copper:
+    description: "Copper Gender"
+  Zinc:
+    description: "Zinc Gender"
+  Gallium:
+    description: "Gallium Gender"
+  Germanium:
+    description: "Germanium Gender"
+  Arsenic:
+    description: "Arsenic Gender"
+  Selenium:
+    description: "Selenium Gender"
+  Bromine:
+    description: "Bromine Gender"
+  Krypton:
+    description: "Krypton Gender"
+  Rubidium:
+    description: "Rubidium Gender"
+  Strontium:
+    description: "Strontium Gender"
+  Yttrium:
+    description: "Yttrium Gender"
+  Zirconium:
+    description: "Zirconium Gender"
+  Niobium:
+    description: "Niobium Gender"
+  Molybdenum:
+    description: "Molybdenum Gender"
+  Technetium:
+    description: "Technetium Gender"
+  Ruthenium:
+    description: "Ruthenium Gender"
+  Rhodium:
+    description: "Rhodium Gender"
+  Palladium:
+    description: "Palladium Gender"
+  Silver:
+    description: "Silver Gender"
+  Cadmium:
+    description: "Cadmium Gender"
+  Indium:
+    description: "Indium Gender"
+  Tin:
+    description: "Tin Gender"
+  Antimony:
+    description: "Antimony Gender"
+  Tellurium:
+    description: "Tellurium Gender"
+  Iodine:
+    description: "Iodine Gender"
+  Xenon:
+    description: "Xenon Gender"
+  Cesium:
+    description: "Cesium Gender"
+  Barium:
+    description: "Barium Gender"
+  Lanthanum:
+    description: "Lanthanum Gender"
+  Cerium:
+    description: "Cerium Gender"
+  Praseodymium:
+    description: "Praseodymium Gender"
+  Neodymium:
+    description: "Neodymium Gender"
+  Promethium:
+    description: "Promethium Gender"
+  Samarium:
+    description: "Samarium Gender"
+  Europium:
+    description: "Europium Gender"
+  Gadolinium:
+    description: "Gadolinium Gender"
+  Terbium:
+    description: "Terbium Gender"
+  Dysprosium:
+    description: "Dysprosium Gender"
+  Holmium:
+    description: "Holmium Gender"
+  Erbium:
+    description: "Erbium Gender"
+  Thulium:
+    description: "Thulium Gender"
+  Ytterbium:
+    description: "Ytterbium Gender"
+  Lutetium:
+    description: "Lutetium Gender"
+  Hafnium:
+    description: "Hafnium Gender"
+  Tantalum:
+    description: "Tantalum Gender"
+  Tungsten:
+    description: "Tungsten Gender"
+  Rhenium:
+    description: "Rhenium Gender"
+  Osmium:
+    description: "Osmium Gender"
+  Iridium:
+    description: "Iridium Gender"
+  Platinum:
+    description: "Platinum Gender"
+  Gold:
+    description: "Gold Gender"
+  Mercury:
+    description: "Mercury Gender"
+  Thallium:
+    description: "Thallium Gender"
+  Lead:
+    description: "Lead Gender"
+  Bismuth:
+    description: "Bismuth Gender"
+  Polonium:
+    description: "Polonium Gender"
+  Astatine:
+    description: "Astatine Gender"
+  Radon:
+    description: "Radon Gender"
+  Francium:
+    description: "Francium Gender"
+  Radium:
+    description: "Radium Gender"
+  Actinium:
+    description: "Actinium Gender"
+  Thorium:
+    description: "Thorium Gender"
+  Protactinium:
+    description: "Protactinium Gender"
+  Uranium:
+    description: "Uranium Gender"
+  Neptunium:
+    description: "Neptunium Gender"
+  Plutonium:
+    description: "Plutonium Gender"
+  Americium:
+    description: "Americium Gender"
+  Curium:
+    description: "Curium Gender"
+  Berkelium:
+    description: "Berkelium Gender"
+  Californium:
+    description: "Californium Gender"
+  Einsteinium:
+    description: "Einsteinium Gender"
+  Fermium:
+    description: "Fermium Gender"
+  Mendelevium:
+    description: "Mendelevium Gender"
+  Nobelium:
+    description: "Nobelium Gender"
+  Lawrencium:
+    description: "Lawrencium Gender"
+  Rutherfordium:
+    description: "Rutherfordium Gender"
+  Dubnium:
+    description: "Dubnium Gender"
+  Seaborgium:
+    description: "Seaborgium Gender"
+  Bohrium:
+    description: "Bohrium Gender"
+  Hassium:
+    description: "Hassium Gender"
+  Meitnerium:
+    description: "Meitnerium Gender"
+  Darmstadtium:
+    description: "Darmstadtium Gender"
+  Roentgenium:
+    description: "Roentgenium Gender"
+  Copernicium:
+    description: "Copernicium Gender"
+  Nihonium:
+    description: "Nihonium Gender"
+  Flerovium:
+    description: "Flerovium Gender"
+  Moscovium:
+    description: "Moscovium Gender"
+  Livermorium:
+    description: "Livermorium Gender"
+  Tennessine:
+    description: "Tennessine Gender"
+  Oganesson:
+    description: "Oganesson Gender"

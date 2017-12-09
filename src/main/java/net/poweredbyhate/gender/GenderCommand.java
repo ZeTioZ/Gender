@@ -2,11 +2,18 @@ package net.poweredbyhate.gender;
 
 import mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lax on 1/5/2017.
@@ -56,13 +63,17 @@ public class GenderCommand implements CommandExecutor {
 
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (args[0].equalsIgnoreCase("set") && plugin.goMental().getGender(args[1]) != null) {
-                    plugin.goMental().setPlayerGender(p, args[1]);
-                    plugin.goMental().sendNonGenderNeutralMessage(sender, "&aYou now identify as &b" + StringUtils.capitalize(args[1]));
+                String legender = args[1].toLowerCase();
+                if (args[0].equalsIgnoreCase("set") && plugin.goMental().getGender(legender) != null) {
+                    if (!p.hasPermission("gender.set."+legender) || !p.hasPermission("gender.set.all")) {
+                        plugin.goMental().sendNonGenderNeutralMessage(p, "&cYou do not have enough privilege!");
+                        return false;
+                    }
+                    plugin.goMental().setPlayerGender(p, legender);
+                    plugin.goMental().sendNonGenderNeutralMessage(sender, "&aYou now identify as &b" + StringUtils.capitalize(legender));
                 }
             }
         }
         return false;
     }
 }
-

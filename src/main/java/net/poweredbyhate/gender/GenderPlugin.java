@@ -2,9 +2,12 @@ package net.poweredbyhate.gender;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spigot.SpigotUpdater;
 
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Lax on 12/15/2016.
+ *
+ * Charge for setting gender
  */
 public class GenderPlugin extends JavaPlugin {
 
@@ -54,7 +59,7 @@ public class GenderPlugin extends JavaPlugin {
     }
 
     public void loadCustomChart() {
-        getLogger().log(Level.INFO,"Loading custom charts");
+        getLogger().log(Level.INFO,"Loading: Custom Charts");
         metrics.addCustomChart(new Metrics.AdvancedPie("le_popular_genders", () -> {
             Map<String, Integer> genderCount = new HashMap<>();
             for (String s : getConfig().getKeys(false)) {
@@ -78,6 +83,7 @@ public class GenderPlugin extends JavaPlugin {
             saveFile("CommunityPack.yml");
             saveFile("MasterPack.yml");
             saveFile("BasicPack.yml");
+            saveFile("ElementsPack.yml");
         }
         try {
             Files.walk(Paths.get(folder.getAbsolutePath())).filter(file -> file.getFileName().toString().endsWith(".yml")).collect(Collectors.toList()).forEach(this::loadData);

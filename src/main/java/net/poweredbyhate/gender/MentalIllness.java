@@ -1,5 +1,6 @@
 package net.poweredbyhate.gender;
 
+import net.poweredbyhate.gender.events.GenderChangeEvent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -63,6 +64,8 @@ public class MentalIllness {
     }
 
     public void setPlayerGender(Player p, String gender) {
+        GenderChangeEvent genderChangeEvent = new GenderChangeEvent(p, getGender(getPlayerGender(p)), getGender(gender));
+        Bukkit.getServer().getPluginManager().callEvent(genderChangeEvent);
         setConfig(p.getUniqueId(), gender);
     }
 
@@ -76,12 +79,6 @@ public class MentalIllness {
     }
 
     public void sendNonGenderNeutralMessage(Object obj, String message) {
-        if (obj instanceof Player) {
-            ((Player) obj).sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-            return;
-        }
-        if (obj instanceof CommandSender) {
-            ((CommandSender) obj).sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-        }
+        ((CommandSender) obj).sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 }
