@@ -1,19 +1,15 @@
 package net.poweredbyhate.gender;
 
 import mkremins.fanciful.FancyMessage;
+import net.poweredbyhate.gender.special.Gender;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Lax on 1/5/2017.
@@ -29,7 +25,7 @@ public class GenderCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (!sender.hasPermission("gender.gender")) {
-            sender.sendMessage(ChatColor.RED + "You do not have enough privilege");
+            sender.sendMessage(ChatColor.RED + "You do not have enough privilege! (1)");
             return false;
         }
 
@@ -58,19 +54,25 @@ public class GenderCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("check") || args[0].equalsIgnoreCase("show")) {
-                plugin.goMental().sendNonGenderNeutralMessage(sender, "&a" + args[1] + " identify as&b " + plugin.goMental().getPlayerGender(args[1]));
+                OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
+                if (player == null) {
+                    plugin.goMental().sendNonGenderNeutralMessage(sender, "&cPlayer is not online");
+                    return false;
+                }
+                plugin.goMental().sendNonGenderNeutralMessage(sender, "&a" + args[1] + " identify as&b " + plugin.goMental().getSnowflake((Player) player).getGender());
             }
 
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 String legender = args[1].toLowerCase();
                 if (args[0].equalsIgnoreCase("set") && plugin.goMental().getGender(legender) != null) {
-                    if (!p.hasPermission("gender.set."+legender) || !p.hasPermission("gender.set.all")) {
-                        plugin.goMental().sendNonGenderNeutralMessage(p, "&cYou do not have enough privilege!");
-                        return false;
+                    if (p.hasPermission("gender.set."+legender) || p.hasPermission("gender.set.all")) {
+                        plugin.goMental().setPlayerGender(p, legender);
+                        plugin.goMental().sendNonGenderNeutralMessage(sender, "&aYou now identify as &b" + StringUtils.capitalize(legender));
+                    } else {
+                        plugin.goMental().sendNonGenderNeutralMessage(p, "&cYou do not have enough privilege! (2)");
                     }
-                    plugin.goMental().setPlayerGender(p, legender);
-                    plugin.goMental().sendNonGenderNeutralMessage(sender, "&aYou now identify as &b" + StringUtils.capitalize(legender));
+
                 }
             }
         }

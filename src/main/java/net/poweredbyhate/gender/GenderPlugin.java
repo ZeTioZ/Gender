@@ -1,13 +1,11 @@
 package net.poweredbyhate.gender;
 
+import net.poweredbyhate.gender.special.Gender;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.update.spigot.SpigotUpdater;
 
@@ -42,6 +40,7 @@ public class GenderPlugin extends JavaPlugin {
         getCommand("gender").setExecutor(new GenderCommand(this));
         metrics = new Metrics(this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }
@@ -114,6 +113,7 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+        goMental().imagine(new Gender(this, "???", "Null gender"));
     }
 
     public void saveFile(String name) { //should only be called on first startup ¯\_(ツ)_/¯

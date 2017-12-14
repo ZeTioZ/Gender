@@ -19,7 +19,7 @@ public class PlaceholderListener extends EZPlaceholderHook {
     public String onPlaceholderRequest(Player player, String s) {
 
         if (s.equalsIgnoreCase("gender")) {
-            return plugin.goMental().getPlayerGender(player);
+            return plugin.goMental().getSnowflake(player).getGender().getName();
         }
 
         return "UNKNOWN";

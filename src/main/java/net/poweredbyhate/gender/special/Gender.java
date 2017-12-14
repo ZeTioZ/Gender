@@ -1,4 +1,6 @@
-package net.poweredbyhate.gender;
+package net.poweredbyhate.gender.special;
+
+import net.poweredbyhate.gender.GenderPlugin;
 
 /**
  * Created by Lax on 7/19/2017.

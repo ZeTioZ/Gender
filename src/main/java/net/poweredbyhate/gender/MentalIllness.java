@@ -1,6 +1,8 @@
 package net.poweredbyhate.gender;
 
 import net.poweredbyhate.gender.events.GenderChangeEvent;
+import net.poweredbyhate.gender.special.Gender;
+import net.poweredbyhate.gender.special.Snowflake;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,10 +22,27 @@ public class MentalIllness {
 
     private GenderPlugin plugin;
     private HashMap<String, Gender> mentalillness;
+    private HashMap<UUID, Snowflake> snowflakes;
 
     public MentalIllness(GenderPlugin plugin) {
         this.plugin = plugin;
         mentalillness = new HashMap<>();
+        snowflakes = new HashMap<>();
+    }
+
+    public void registerFlake(Player p) {
+        snowflakes.put(p.getUniqueId(), new Snowflake(plugin,p,getPlayerGender(p)));
+    }
+
+    public void removeFlake(Player p) {
+        snowflakes.remove(p.getUniqueId());
+    }
+
+    public Snowflake getSnowflake(Player p) {
+        if (snowflakes.get(p.getUniqueId()) == null) {
+            snowflakes.put(p.getUniqueId(), new Snowflake(plugin,p,getPlayerGender(p)));
+        }
+        return snowflakes.get(p.getUniqueId());
     }
 
     public void imagine(Gender g) {
@@ -50,31 +69,24 @@ public class MentalIllness {
         return g.replace("_", " ");
     }
 
-    public String getPlayerGender(Player player) {
-        return getMentalIllness(player.getUniqueId());
+    public Gender getPlayerGender(Player player) {
+        return getGender(getMentalIllness(player.getUniqueId()));
     }
 
-    public String getPlayerGender(OfflinePlayer player) {
-        return getMentalIllness(player.getUniqueId());
-    }
-
-    @Deprecated
-    public String getPlayerGender(String player) {
-        return getPlayerGender(Bukkit.getOfflinePlayer(player));
-    }
 
     public void setPlayerGender(Player p, String gender) {
-        GenderChangeEvent genderChangeEvent = new GenderChangeEvent(p, getGender(getPlayerGender(p)), getGender(gender));
+        GenderChangeEvent genderChangeEvent = new GenderChangeEvent(p, getSnowflake(p).getGender(), getGender(gender));
         Bukkit.getServer().getPluginManager().callEvent(genderChangeEvent);
+        getSnowflake(p).setGender(getGender(gender));
         setConfig(p.getUniqueId(), gender);
     }
 
-    public void setConfig(Object key, String payload) {
+    private void setConfig(Object key, String payload) {
         GenderPlugin.instance.getConfig().set(key.toString(), StringUtils.capitalize(payload));
         GenderPlugin.instance.saveConfig();
     }
 
-    public FileConfiguration getConfig() {
+    private FileConfiguration getConfig() {
         return GenderPlugin.instance.getConfig();
     }
 

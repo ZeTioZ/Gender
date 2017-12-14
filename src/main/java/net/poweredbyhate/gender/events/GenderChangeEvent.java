@@ -1,8 +1,7 @@
 package net.poweredbyhate.gender.events;
 
-import net.poweredbyhate.gender.Gender;
+import net.poweredbyhate.gender.special.Gender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
