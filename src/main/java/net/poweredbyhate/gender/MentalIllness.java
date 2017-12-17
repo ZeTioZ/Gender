@@ -66,7 +66,7 @@ public class MentalIllness {
         if (g == null) {
             return "???";
         }
-        return g.replace("_", " ");
+        return g;
     }
 
     public Gender getPlayerGender(Player player) {
@@ -78,7 +78,7 @@ public class MentalIllness {
         GenderChangeEvent genderChangeEvent = new GenderChangeEvent(p, getSnowflake(p).getGender(), getGender(gender));
         Bukkit.getServer().getPluginManager().callEvent(genderChangeEvent);
         getSnowflake(p).setGender(getGender(gender));
-        setConfig(p.getUniqueId(), gender);
+        setConfig(p.getUniqueId(), getGender(gender).getName());
     }
 
     private void setConfig(Object key, String payload) {
