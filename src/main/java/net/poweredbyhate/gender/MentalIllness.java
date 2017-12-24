@@ -39,9 +39,7 @@ public class MentalIllness {
     }
 
     public Snowflake getSnowflake(Player p) {
-        if (snowflakes.get(p.getUniqueId()) == null) {
-            snowflakes.put(p.getUniqueId(), new Snowflake(plugin,p,getPlayerGender(p)));
-        }
+        snowflakes.computeIfAbsent(p.getUniqueId(), k -> new Snowflake(plugin, p, getPlayerGender(p)));
         return snowflakes.get(p.getUniqueId());
     }
 

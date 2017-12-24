@@ -1,5 +1,6 @@
 package net.poweredbyhate.gender;
 
+import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.special.Gender;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -41,6 +42,7 @@ public class GenderPlugin extends JavaPlugin {
         metrics = new Metrics(this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        PaginatedGUI.prepare(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }
@@ -108,7 +110,9 @@ public class GenderPlugin extends JavaPlugin {
                 return;
             }
             for (String m : configuration.getConfigurationSection("genders").getKeys(false)) {
-                goMental().imagine(new Gender(this,m,configuration.getString("genders."+m+".description")));
+                Gender g = new Gender(this,m,configuration.getString("genders."+m+".description"));
+                g.setFromPack(file.getName().split("\\.")[0]);
+                goMental().imagine(g);
             }
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();

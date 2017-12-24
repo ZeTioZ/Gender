@@ -1,20 +1,27 @@
 package net.poweredbyhate.gender;
 
-import mkremins.fanciful.FancyMessage;
+import com.cloutteam.samjakob.gui.ItemBuilder;
+import com.cloutteam.samjakob.gui.buttons.GUIButton;
+import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.special.Gender;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Created by Lax on 1/5/2017.
  */
-public class GenderCommand implements CommandExecutor {
+public class GenderCommand implements CommandExecutor { //todo Make pretty
 
     GenderPlugin plugin;
 
@@ -39,18 +46,31 @@ public class GenderCommand implements CommandExecutor {
         }
 
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("list")) {
-                FancyMessage bean = new FancyMessage(ChatColor.RED + "(" + ChatColor.GREEN + plugin.goMental().getDatabase().keySet().size() + ChatColor.RED + ") ");
+            if ((args[0].equalsIgnoreCase("gui") || args[0].equalsIgnoreCase("list")) && sender.hasPermission("gender.guilist")) {
+                Player p = (Player) sender; //inb4 cast exception from console
+                PaginatedGUI menu = new PaginatedGUI("&5Genders &9(&4{SIZE}&9)".replace("{SIZE}", String.valueOf(plugin.goMental().getDatabase().keySet().size())));
                 for (Gender g : plugin.goMental().getGenders()) {
-                    bean.then(ChatColor.AQUA + g.getName()).tooltip(ChatColor.RED + g.getName() + ":", ChatColor.GREEN + g.getDiscription()).then(ChatColor.WHITE + ", ");
+                    GUIButton button = new GUIButton(ItemBuilder.start(Material.WOOL).data((short) getNotRandomInt()).name("&a"+g.getName()).lore(Arrays.asList(WordUtils.wrap(g.getDescription(), 50).split(System.lineSeparator()))).build());
+                    button.setListener(event -> {
+                        event.setCancelled(true);
+                        if (event.getCurrentItem().hasItemMeta()) {
+                            p.performCommand("gender set " + ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
+                        }
+                        event.getWhoClicked().closeInventory();
+                    });
+                    menu.addButton(button);
                 }
-                bean.send(sender);
+                Gender g = plugin.goMental().getSnowflake(p).getGender();
+                GUIButton genderInfo = new GUIButton(ItemBuilder.start(Material.BOOK).name("&aYour gender: &b"+g.getName()).lore(Arrays.asList(WordUtils.wrap(g.getDescription(), 50).split(System.lineSeparator()))).build());
+                genderInfo.setListener(event ->  event.setCancelled(true));
+                menu.setToolbarItem(0, genderInfo);
+                p.openInventory(menu.getInventory());
             }
         }
 
         if (args.length >= 2) {
             if (args[0].equalsIgnoreCase("info") && plugin.goMental().getDatabase().containsKey(args[1].toLowerCase())) {
-                plugin.goMental().sendNonGenderNeutralMessage(sender, "&a" + StringUtils.capitalize(args[1]) + ":&b " + plugin.goMental().getGender(args[1]).getDiscription());
+                plugin.goMental().sendNonGenderNeutralMessage(sender, "&a" + StringUtils.capitalize(args[1]) + ":&b " + plugin.goMental().getGender(args[1]).getDescription());
             }
 
             if (args[0].equalsIgnoreCase("check") || args[0].equalsIgnoreCase("show")) {
@@ -77,5 +97,9 @@ public class GenderCommand implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    public int getNotRandomInt() {
+        return ThreadLocalRandom.current().nextInt(0,15);
     }
 }

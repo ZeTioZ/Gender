@@ -12,6 +12,7 @@ public class Gender {
     private String name;
     private String description;
     private Boolean mentalillness = true;
+    private String fromPack;
 
     public Gender(GenderPlugin plugin, String name, String description) {
         this.plugin = plugin;
@@ -23,7 +24,7 @@ public class Gender {
         return this.name;
     }
 
-    public String getDiscription() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -31,7 +32,15 @@ public class Gender {
         return this.mentalillness;
     }
 
+    public String getFromPack() {
+        return this.fromPack;
+    }
+
     public void setMentalIllness(Boolean b) {
         this.mentalillness = b;
+    }
+
+    public void setFromPack(String pack) {
+        this.fromPack = pack;
     }
 }
