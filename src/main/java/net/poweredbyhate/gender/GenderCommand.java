@@ -50,7 +50,7 @@ public class GenderCommand implements CommandExecutor { //todo Make pretty
                 Player p = (Player) sender; //inb4 cast exception from console
                 PaginatedGUI menu = new PaginatedGUI("&5Genders &9(&4{SIZE}&9)".replace("{SIZE}", String.valueOf(plugin.goMental().getDatabase().keySet().size())));
                 for (Gender g : plugin.goMental().getGenders()) {
-                    GUIButton button = new GUIButton(ItemBuilder.start(Material.WOOL).data((short) getNotRandomInt()).name("&a"+g.getName()).lore(Arrays.asList(WordUtils.wrap(g.getDescription(), 50).split(System.lineSeparator()))).build());
+                    GUIButton button = new GUIButton(ItemBuilder.start(Material.WOOL).data((short) getNotRandomInt()).name("&a"+g.getName()).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());
                     button.setListener(event -> {
                         event.setCancelled(true);
                         if (event.getCurrentItem().hasItemMeta()) {
@@ -61,7 +61,7 @@ public class GenderCommand implements CommandExecutor { //todo Make pretty
                     menu.addButton(button);
                 }
                 Gender g = plugin.goMental().getSnowflake(p).getGender();
-                GUIButton genderInfo = new GUIButton(ItemBuilder.start(Material.BOOK).name("&aYour gender: &b"+g.getName()).lore(Arrays.asList(WordUtils.wrap(g.getDescription(), 50).split(System.lineSeparator()))).build());
+                GUIButton genderInfo = new GUIButton(ItemBuilder.start(Material.BOOK).name("&aYour gender: &b"+g.getName()).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());
                 genderInfo.setListener(event ->  event.setCancelled(true));
                 menu.setToolbarItem(0, genderInfo);
                 p.openInventory(menu.getInventory());
@@ -79,7 +79,7 @@ public class GenderCommand implements CommandExecutor { //todo Make pretty
                     plugin.goMental().sendNonGenderNeutralMessage(sender, "&cPlayer is not online");
                     return false;
                 }
-                plugin.goMental().sendNonGenderNeutralMessage(sender, "&a" + args[1] + " identify as&b " + plugin.goMental().getSnowflake((Player) player).getGender());
+                plugin.goMental().sendNonGenderNeutralMessage(sender, "&a" + args[1] + " identify as&b " + plugin.goMental().getSnowflake((Player) player).getGender().getName());
             }
 
             if (sender instanceof Player) {

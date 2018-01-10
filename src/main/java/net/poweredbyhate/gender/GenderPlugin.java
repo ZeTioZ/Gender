@@ -85,6 +85,7 @@ public class GenderPlugin extends JavaPlugin {
             saveFile("MasterPack.yml");
             saveFile("BasicPack.yml");
             saveFile("ElementsPack.yml");
+            saveFile("HogwartsPack.yml");
         }
         try {
             Files.walk(Paths.get(folder.getAbsolutePath())).filter(file -> file.getFileName().toString().endsWith(".yml")).collect(Collectors.toList()).forEach(this::loadData);
