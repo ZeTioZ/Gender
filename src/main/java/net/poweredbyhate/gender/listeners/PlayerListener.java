@@ -1,5 +1,6 @@
-package net.poweredbyhate.gender;
+package net.poweredbyhate.gender.listeners;
 
+import net.poweredbyhate.gender.GenderPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

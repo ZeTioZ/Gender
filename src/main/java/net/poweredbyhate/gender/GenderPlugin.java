@@ -1,6 +1,10 @@
 package net.poweredbyhate.gender;
 
+import co.aikar.commands.BukkitCommandManager;
 import com.cloutteam.samjakob.gui.types.PaginatedGUI;
+import net.poweredbyhate.gender.commands.CommandGender;
+import net.poweredbyhate.gender.listeners.ChatListener;
+import net.poweredbyhate.gender.listeners.PlayerListener;
 import net.poweredbyhate.gender.special.Gender;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -31,21 +35,24 @@ public class GenderPlugin extends JavaPlugin {
 
     public static GenderPlugin instance;
     private MentalIllness mentalIllness;
+    private BukkitCommandManager commandManager;
     private Metrics metrics;
 
     public void onEnable() {
         saveDefaultConfig();
-        saveResource("CustomGenders.yml", false);
         instance = this;
+        commandManager = new BukkitCommandManager(this);
         mentalIllness = new MentalIllness(this);
-        getCommand("gender").setExecutor(new GenderCommand(this));
         metrics = new Metrics(this);
-        Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        //getCommand("gender").setExecutor(new GenderCommand(this));
+        commandManager.registerCommand(new CommandGender(this));
+        commandManager.enableUnstableAPI("help");
         PaginatedGUI.prepare(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }
+        saveResource("CustomGenders.yml", false);
+        registerListeners();
         updateCheck();
         loadCustomChart();
         loadFiles();
@@ -57,6 +64,11 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
     }
 
     public void loadCustomChart() {
@@ -92,6 +104,7 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        goMental().imagine(new Gender(this, "???", "Null gender"));
     }
 
     public void loadData(Path path) {
@@ -118,10 +131,10 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-        goMental().imagine(new Gender(this, "???", "Null gender"));
+
     }
 
-    public void saveFile(String name) { //should only be called on first startup ¯\_(ツ)_/¯
+    public void saveFile(String name) {
         File folder = new File(getDataFolder(), "genderpacks");
         File newFile = new File(folder, name);
         FileConfiguration c = new YamlConfiguration();

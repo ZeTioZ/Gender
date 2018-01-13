@@ -3,5 +3,3 @@ version: ${project.version}
 author: null.entity
 main: net.poweredbyhate.gender.GenderPlugin
 softdepend: [PlaceholderAPI]
-commands:
-  gender:
