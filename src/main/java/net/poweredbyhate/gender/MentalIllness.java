@@ -80,12 +80,12 @@ public class MentalIllness {
     }
 
     private void setConfig(Object key, String payload) {
-        GenderPlugin.instance.getConfig().set(key.toString(), StringUtils.capitalize(payload));
-        GenderPlugin.instance.saveConfig();
+        plugin.getConfig().set(key.toString(), StringUtils.capitalize(payload));
+        plugin.saveConfig();
     }
 
     private FileConfiguration getConfig() {
-        return GenderPlugin.instance.getConfig();
+        return plugin.getConfig();
     }
 
     public void sendNonGenderNeutralMessage(Object obj, String message) {
