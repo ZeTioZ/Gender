@@ -4,8 +4,10 @@ import co.aikar.commands.BukkitCommandManager;
 import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.commands.CommandGender;
 import net.poweredbyhate.gender.listeners.ChatListener;
+import net.poweredbyhate.gender.listeners.PlaceholderListener;
 import net.poweredbyhate.gender.listeners.PlayerListener;
 import net.poweredbyhate.gender.special.Gender;
+import net.poweredbyhate.gender.utilities.Messenger;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -52,10 +54,12 @@ public class GenderPlugin extends JavaPlugin {
             new PlaceholderListener(this, "gender").hook();
         }
         saveResource("CustomGenders.yml", false);
+        saveResource("messages.yml", false);
         registerListeners();
         updateCheck();
         loadCustomChart();
         loadFiles();
+        loadMessagesCache();
     }
 
     public void updateCheck() {
@@ -131,7 +135,19 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
 
+    public void loadMessagesCache() {
+        File messagesFile = new File(getDataFolder(), "messages.yml");
+        FileConfiguration c = new YamlConfiguration();
+        try {
+            c.load(messagesFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        for (String key : c.getKeys(false)) {
+            Messenger.messagesCache.put(key, c.getString(key));
+        }
     }
 
     public void saveFile(String name) {

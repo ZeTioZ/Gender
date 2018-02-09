@@ -88,7 +88,4 @@ public class MentalIllness {
         return plugin.getConfig();
     }
 
-    public void sendNonGenderNeutralMessage(Object obj, String message) {
-        ((CommandSender) obj).sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-    }
 }

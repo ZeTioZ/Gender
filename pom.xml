@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.poweredbyhate</groupId>
     <artifactId>Gender</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
     <build>
         <defaultGoal>clean package</defaultGoal>
         <finalName>${project.name}</finalName>
