@@ -13,6 +13,8 @@ public class Gender {
     private String description;
     private Boolean mentalillness = true;
     private String fromPack;
+    private boolean isPublic = true;
+    private String pronoun;
 
     public Gender(GenderPlugin plugin, String name, String description) {
         this.plugin = plugin;
@@ -42,5 +44,21 @@ public class Gender {
 
     public void setFromPack(String pack) {
         this.fromPack = pack;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public String getPronoun() {
+        return pronoun;
+    }
+
+    public void setPronoun(String pronoun) {
+        this.pronoun = pronoun;
     }
 }

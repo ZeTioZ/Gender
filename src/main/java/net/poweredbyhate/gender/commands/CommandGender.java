@@ -68,15 +68,17 @@ public class CommandGender extends BaseCommand {
     public void onList(Player sender) {
         PaginatedGUI menu = new PaginatedGUI(m("guiName").replace("{SIZE}", String.valueOf(plugin.goMental().getDatabase().keySet().size())));
         for (Gender g : plugin.goMental().getGenders()) {
-            GUIButton button = new GUIButton(ItemBuilder.start(Material.WOOL).data((short) getNotRandomInt()).name("&a"+g.getName()).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());
-            button.setListener(event -> {
-                event.setCancelled(true);
-                if (event.getCurrentItem().hasItemMeta()) {
-                    sender.performCommand("gender set " + ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
-                }
-                event.getWhoClicked().closeInventory();
-            });
-            menu.addButton(button);
+            if (g.isPublic()) {
+                GUIButton button = new GUIButton(ItemBuilder.start(Material.WOOL).data((short) getNotRandomInt()).name("&a"+g.getName()).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());
+                button.setListener(event -> {
+                    event.setCancelled(true);
+                    if (event.getCurrentItem().hasItemMeta()) {
+                        sender.performCommand("gender set " + ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
+                    }
+                    event.getWhoClicked().closeInventory();
+                });
+                menu.addButton(button);
+            }
         }
         Gender g = plugin.goMental().getSnowflake(sender).getGender();
         GUIButton genderInfo = new GUIButton(ItemBuilder.start(Material.BOOK).name(m("guiGenderInfo", g.getName())).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());

@@ -6,6 +6,8 @@ pack:
   enabled: true
 genders:
   Male:
-      description: 'Male'
+    description: 'Male'
+    pronoun: 'He'
   Female:
-      description: 'Female'
+    description: 'Female'
+    pronoun: 'She'

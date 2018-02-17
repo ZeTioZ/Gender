@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,6 @@ public class GenderPlugin extends JavaPlugin {
         commandManager = new BukkitCommandManager(this);
         mentalIllness = new MentalIllness(this);
         metrics = new Metrics(this);
-        //getCommand("gender").setExecutor(new GenderCommand(this));
         commandManager.registerCommand(new CommandGender(this));
         commandManager.enableUnstableAPI("help");
         PaginatedGUI.prepare(this);
@@ -78,7 +78,7 @@ public class GenderPlugin extends JavaPlugin {
     public void loadCustomChart() {
         getLogger().log(Level.INFO,"Loading: Custom Charts");
         metrics.addCustomChart(new Metrics.AdvancedPie("le_popular_genders", () -> {
-            Map<String, Integer> genderCount = new HashMap<>();
+            Map<String, Integer> genderCount = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             for (String s : getConfig().getKeys(false)) {
                 String gender = getConfig().getString(s);
                 int count = genderCount.getOrDefault(gender, 0);
@@ -108,7 +108,9 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        goMental().imagine(new Gender(this, "???", "Null gender"));
+        Gender gender = new Gender(this, "", "Null gender");
+        gender.setPublic(false);
+        goMental().imagine(gender);
     }
 
     public void loadData(Path path) {
@@ -128,8 +130,10 @@ public class GenderPlugin extends JavaPlugin {
                 return;
             }
             for (String m : configuration.getConfigurationSection("genders").getKeys(false)) {
-                Gender g = new Gender(this,m,configuration.getString("genders."+m+".description"));
+                Gender g = new Gender(this,m,configuration.getString("genders."+m+".description", m));
                 g.setFromPack(file.getName().split("\\.")[0]);
+                g.setPronoun(configuration.getString("genders."+m+".pronoun", ""));
+                g.setPublic(configuration.getBoolean("genders."+m+".public", true));
                 goMental().imagine(g);
             }
         } catch (IOException | InvalidConfigurationException e) {

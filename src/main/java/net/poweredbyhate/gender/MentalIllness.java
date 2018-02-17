@@ -62,13 +62,17 @@ public class MentalIllness {
     private String getMentalIllness(UUID player) {
         String g = getConfig().getString(player.toString());
         if (g == null) {
-            return "???";
+            return "";
         }
         return g;
     }
 
     public Gender getPlayerGender(Player player) {
-        return getGender(getMentalIllness(player.getUniqueId()));
+        Gender g = getGender(getMentalIllness(player.getUniqueId()));
+        if (g == null) {
+            return getGender("");
+        }
+        return g;
     }
 
 
