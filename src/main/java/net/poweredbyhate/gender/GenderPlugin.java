@@ -1,6 +1,7 @@
 package net.poweredbyhate.gender;
 
 import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.CommandReplacements;
 import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.commands.CommandGender;
 import net.poweredbyhate.gender.listeners.ChatListener;
@@ -8,6 +9,7 @@ import net.poweredbyhate.gender.listeners.PlaceholderListener;
 import net.poweredbyhate.gender.listeners.PlayerListener;
 import net.poweredbyhate.gender.special.Gender;
 import net.poweredbyhate.gender.utilities.Messenger;
+import net.poweredbyhate.gender.utilities.Settings;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -43,6 +45,7 @@ public class GenderPlugin extends JavaPlugin {
 
     public void onEnable() {
         saveDefaultConfig();
+        saveResources();
         instance = this;
         commandManager = new BukkitCommandManager(this);
         mentalIllness = new MentalIllness(this);
@@ -53,8 +56,6 @@ public class GenderPlugin extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }
-        saveResource("CustomGenders.yml", false);
-        saveResource("messages.yml", false);
         registerListeners();
         updateCheck();
         loadCustomChart();
@@ -68,6 +69,12 @@ public class GenderPlugin extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void saveResources() {
+        saveResource("CustomGenders.yml", false);
+        saveResource("messages.yml", false);
+        //saveResource("settings.yml", false);
     }
 
     public void registerListeners() {

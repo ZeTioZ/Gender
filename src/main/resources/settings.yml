@@ -1,0 +1,14 @@
+#
+# Base command, separate with |
+#
+baseCommand: "gender|g"
+
+#
+# This feature is not yet implemented.
+#
+database:
+  enabled: false
+  address: 'localhost:3306'
+  database: 'minecraft'
+  username: 'root'
+  password: ''

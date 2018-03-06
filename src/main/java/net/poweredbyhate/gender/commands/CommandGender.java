@@ -55,6 +55,7 @@ public class CommandGender extends BaseCommand {
     public void onSet(Player sender, String gender) {
         if (plugin.goMental().getGender(gender) == null) {
             sender.sendMessage(m("noGender", gender));
+            return;
         }
         if (sender.hasPermission("gender.set."+gender) || sender.hasPermission("gender.set.all")) {
             plugin.goMental().setPlayerGender(sender, gender);
