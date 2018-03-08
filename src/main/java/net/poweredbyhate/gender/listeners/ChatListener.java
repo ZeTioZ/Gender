@@ -15,6 +15,7 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent ev) {
         Gender gender = GenderPlugin.instance.goMental().getSnowflake(ev.getPlayer()).getGender();
         String g = gender.getName().replace("_", " ");
-        ev.setFormat(ev.getFormat().replace("{gender_gender}", g).replace("%gender_gender%", g).replace("{gender_pronoun}", gender.getPronoun()).replace("%gender_pronoun%", gender.getPronoun())); //why do I even bother
+        ev.setFormat(ev.getFormat().replace("{gender_gender}", g).replace("%gender_gender%", g)
+                .replace("{gender_pronoun}", gender.getPronoun()).replace("%gender_pronoun%", gender.getPronoun())); //why do I even bother
     }
 }

@@ -117,6 +117,7 @@ public class GenderPlugin extends JavaPlugin {
         }
         Gender gender = new Gender(this, "", "Null gender");
         gender.setPublic(false);
+        gender.setPronoun("");
         goMental().imagine(gender);
     }
 

@@ -41,7 +41,7 @@ public class CommandGender extends BaseCommand {
         if (g != null) {
             sender.sendMessage(m("genderDesc",  StringUtils.capitalize(gender), plugin.goMental().getGender(gender).getDescription()));
         } else {
-            sender.sendMessage(m("noGender"));
+            sender.sendMessage(m("noGender", gender));
         }
 
     }
