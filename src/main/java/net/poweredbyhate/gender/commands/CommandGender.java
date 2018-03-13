@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import static net.poweredbyhate.gender.utilities.Messenger.m;
 
-@CommandAlias("gender|g")
+@CommandAlias("%gender")
 public class CommandGender extends BaseCommand {
 
     private GenderPlugin plugin;
@@ -88,7 +88,7 @@ public class CommandGender extends BaseCommand {
         sender.openInventory(menu.getInventory());
     }
 
-    public int getNotRandomInt() {
+    private int getNotRandomInt() {
         return ThreadLocalRandom.current().nextInt(0,15);
     }
 }

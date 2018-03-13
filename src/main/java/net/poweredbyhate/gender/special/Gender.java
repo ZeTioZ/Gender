@@ -8,7 +8,6 @@ import net.poweredbyhate.gender.GenderPlugin;
 
 public class Gender {
 
-    private GenderPlugin plugin;
     private String name;
     private String description;
     private Boolean mentalillness = true;
@@ -16,10 +15,15 @@ public class Gender {
     private boolean isPublic = true;
     private String pronoun;
 
-    public Gender(GenderPlugin plugin, String name, String description) {
-        this.plugin = plugin;
+    public Gender(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public Gender(String name, String description, String pronoun) {
+        this.name = name;
+        this.description = description;
+        this.pronoun = pronoun;
     }
 
     public String getName() {

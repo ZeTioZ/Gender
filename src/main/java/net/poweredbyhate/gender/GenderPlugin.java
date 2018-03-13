@@ -4,10 +4,12 @@ import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.CommandReplacements;
 import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.commands.CommandGender;
+import net.poweredbyhate.gender.hospital.Sql;
 import net.poweredbyhate.gender.listeners.ChatListener;
 import net.poweredbyhate.gender.listeners.PlaceholderListener;
 import net.poweredbyhate.gender.listeners.PlayerListener;
-import net.poweredbyhate.gender.special.Gender;
+import net.poweredbyhate.gender.special.Asylum;
+import net.poweredbyhate.gender.utilities.DatabaseManager;
 import net.poweredbyhate.gender.utilities.Messenger;
 import net.poweredbyhate.gender.utilities.Settings;
 import org.bstats.bukkit.Metrics;
@@ -22,14 +24,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Created by Lax on 12/15/2016.
@@ -40,26 +37,25 @@ public class GenderPlugin extends JavaPlugin {
 
     public static GenderPlugin instance;
     private MentalIllness mentalIllness;
-    private BukkitCommandManager commandManager;
     private Metrics metrics;
+    private Asylum asylum;
 
     public void onEnable() {
         saveDefaultConfig();
         saveResources();
         instance = this;
-        commandManager = new BukkitCommandManager(this);
-        mentalIllness = new MentalIllness(this);
+        makeDatabase();
+        mentalIllness = new MentalIllness(this, asylum);
         metrics = new Metrics(this);
-        commandManager.registerCommand(new CommandGender(this));
-        commandManager.enableUnstableAPI("help");
         PaginatedGUI.prepare(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }
         registerListeners();
+        registerCommand();
         updateCheck();
+        asylum.loadGenders();
         loadCustomChart();
-        loadFiles();
         loadMessagesCache();
     }
 
@@ -68,6 +64,32 @@ public class GenderPlugin extends JavaPlugin {
             new SpigotUpdater(this, 33217);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void registerCommand() {
+        BukkitCommandManager commandManager = new BukkitCommandManager(this);
+        CommandReplacements replacements = commandManager.getCommandReplacements();
+        String s = Settings.getConfig().getString("baseCommand", "gender");
+        getLogger().log(Level.INFO, "[ACF] Commands: " + s);
+        replacements.addReplacement("gender", s);
+        commandManager.registerCommand(new CommandGender(this));
+        commandManager.enableUnstableAPI("help");
+    }
+
+    public void makeDatabase() {
+        if (Settings.getConfig().getBoolean("database.enabled", false)) {
+            try {
+                String database = String.format("jdbc:mysql://%s/%s?useUnicode=true&characterEncoding=utf8", Settings.getConfig().getString("database.address"), Settings.getConfig().getString("database.database"));
+                getLogger().log(Level.INFO, "[Backend] SQL: " + database);
+                asylum = new Sql(this, new DatabaseManager(this, database, Settings.getConfig().getString("database.username"), Settings.getConfig().getString("database.password")));
+            } catch (Exception e) {
+                getLogger().log(Level.WARNING, "[Backend] File");
+                asylum = new net.poweredbyhate.gender.hospital.File(this);
+            }
+        } else {
+            getLogger().log(Level.INFO, "[Backend] File");
+            asylum = new net.poweredbyhate.gender.hospital.File(this);
         }
     }
 
@@ -99,54 +121,8 @@ public class GenderPlugin extends JavaPlugin {
         return mentalIllness;
     }
 
-    public void loadFiles() {
-        File folder = new File(getDataFolder(), "genderpacks");
-        loadData(Paths.get(new File(getDataFolder(), "CustomGenders.yml").getAbsolutePath()), false);
-        if (!folder.exists()) {
-            folder.mkdir();
-            saveFile("CommunityPack.yml");
-            saveFile("MasterPack.yml");
-            saveFile("BasicPack.yml");
-            saveFile("ElementsPack.yml");
-            saveFile("HogwartsPack.yml");
-        }
-        try {
-            Files.walk(Paths.get(folder.getAbsolutePath())).filter(file -> file.getFileName().toString().endsWith(".yml")).collect(Collectors.toList()).forEach(this::loadData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Gender gender = new Gender(this, "", "Null gender");
-        gender.setPublic(false);
-        gender.setPronoun("");
-        goMental().imagine(gender);
-    }
-
-    public void loadData(Path path) {
-        loadData(path, true);
-    }
-
-    public void loadData(Path path, boolean isPack) {
-        File file = new File(path.toUri());
-        getLogger().log(Level.INFO, "Loading: " + file.getName());
-        FileConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.load(file);
-            if (configuration.getConfigurationSection("genders") == null) {
-                return;
-            }
-            if (!configuration.getBoolean("pack.enabled") && isPack) {
-                return;
-            }
-            for (String m : configuration.getConfigurationSection("genders").getKeys(false)) {
-                Gender g = new Gender(this,m,configuration.getString("genders."+m+".description", m));
-                g.setFromPack(file.getName().split("\\.")[0]);
-                g.setPronoun(configuration.getString("genders."+m+".pronoun", ""));
-                g.setPublic(configuration.getBoolean("genders."+m+".public", true));
-                goMental().imagine(g);
-            }
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+    public Asylum getAsylum() {
+        return asylum;
     }
 
     public void loadMessagesCache() {

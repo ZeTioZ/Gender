@@ -1,14 +1,10 @@
 package net.poweredbyhate.gender;
 
 import net.poweredbyhate.gender.events.GenderChangeEvent;
+import net.poweredbyhate.gender.special.Asylum;
 import net.poweredbyhate.gender.special.Gender;
 import net.poweredbyhate.gender.special.Snowflake;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -21,11 +17,13 @@ import java.util.UUID;
 public class MentalIllness {
 
     private GenderPlugin plugin;
+    private Asylum asylum;
     private HashMap<String, Gender> mentalillness;
     private HashMap<UUID, Snowflake> snowflakes;
 
-    public MentalIllness(GenderPlugin plugin) {
+    public MentalIllness(GenderPlugin plugin, Asylum asylum) {
         this.plugin = plugin;
+        this.asylum = asylum;
         mentalillness = new HashMap<>();
         snowflakes = new HashMap<>();
     }
@@ -60,7 +58,7 @@ public class MentalIllness {
     }
 
     private String getMentalIllness(UUID player) {
-        String g = getConfig().getString(player.toString());
+        String g = asylum.getGender(player);
         if (g == null) {
             return "";
         }
@@ -78,18 +76,9 @@ public class MentalIllness {
 
     public void setPlayerGender(Player p, String gender) {
         GenderChangeEvent genderChangeEvent = new GenderChangeEvent(p, getSnowflake(p).getGender(), getGender(gender));
-        Bukkit.getServer().getPluginManager().callEvent(genderChangeEvent);
+        asylum.setGender(p.getUniqueId(), getGender(gender));
         getSnowflake(p).setGender(getGender(gender));
-        setConfig(p.getUniqueId(), getGender(gender).getName());
-    }
-
-    private void setConfig(Object key, String payload) {
-        plugin.getConfig().set(key.toString(), StringUtils.capitalize(payload));
-        plugin.saveConfig();
-    }
-
-    private FileConfiguration getConfig() {
-        return plugin.getConfig();
+        Bukkit.getServer().getPluginManager().callEvent(genderChangeEvent);
     }
 
 }
