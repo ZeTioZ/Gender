@@ -4,7 +4,7 @@
 baseCommand: "gender|g|race"
 
 #
-# This feature is not yet implemented.
+# This feature is somewhat implemented.
 #
 database:
   enabled: false

@@ -1,7 +1,5 @@
 package net.poweredbyhate.gender.special;
 
-import net.poweredbyhate.gender.GenderPlugin;
-
 /**
  * Created by Lax on 7/19/2017.
  */
@@ -24,6 +22,13 @@ public class Gender {
         this.name = name;
         this.description = description;
         this.pronoun = pronoun;
+    }
+
+    public Gender(String name, String description, String pronoun, String fromPack) {
+        this.name = name;
+        this.description = description;
+        this.pronoun = pronoun;
+        this.fromPack = fromPack;
     }
 
     public String getName() {

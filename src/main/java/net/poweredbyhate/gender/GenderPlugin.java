@@ -4,6 +4,7 @@ import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.CommandReplacements;
 import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.commands.CommandGender;
+import net.poweredbyhate.gender.hospital.Flat;
 import net.poweredbyhate.gender.hospital.Sql;
 import net.poweredbyhate.gender.listeners.ChatListener;
 import net.poweredbyhate.gender.listeners.PlaceholderListener;
@@ -24,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -37,6 +39,7 @@ public class GenderPlugin extends JavaPlugin {
 
     public static GenderPlugin instance;
     private MentalIllness mentalIllness;
+    private DatabaseManager databaseManager;
     private Metrics metrics;
     private Asylum asylum;
 
@@ -57,6 +60,10 @@ public class GenderPlugin extends JavaPlugin {
         asylum.loadGenders();
         loadCustomChart();
         loadMessagesCache();
+    }
+
+    public void onDisable() {
+        databaseManager.unmake();
     }
 
     public void updateCheck() {
@@ -80,23 +87,29 @@ public class GenderPlugin extends JavaPlugin {
     public void makeDatabase() {
         if (Settings.getConfig().getBoolean("database.enabled", false)) {
             try {
-                String database = String.format("jdbc:mysql://%s/%s?useUnicode=true&characterEncoding=utf8", Settings.getConfig().getString("database.address"), Settings.getConfig().getString("database.database"));
-                getLogger().log(Level.INFO, "[Backend] SQL: " + database);
-                asylum = new Sql(this, new DatabaseManager(this, database, Settings.getConfig().getString("database.username"), Settings.getConfig().getString("database.password")));
+                getLogger().log(Level.INFO, "[Backend] SQL");
+                String host = Settings.getConfig().getString("database.address");
+                String user = Settings.getConfig().getString("database.username");
+                String pass = Settings.getConfig().getString("database.password");
+                String database = Settings.getConfig().getString("database.database");
+                //debug("Database", host, user, pass, database);
+                databaseManager = new DatabaseManager(this, host, user, pass, database);
+                asylum = new Sql(this);
             } catch (Exception e) {
-                getLogger().log(Level.WARNING, "[Backend] File");
-                asylum = new net.poweredbyhate.gender.hospital.File(this);
+                getLogger().log(Level.WARNING, "[Backend] File ");
+                asylum = new Flat(this);
+                e.printStackTrace();
             }
         } else {
             getLogger().log(Level.INFO, "[Backend] File");
-            asylum = new net.poweredbyhate.gender.hospital.File(this);
+            asylum = new Flat(this);
         }
     }
 
     public void saveResources() {
         saveResource("CustomGenders.yml", false);
         saveResource("messages.yml", false);
-        //saveResource("settings.yml", false);
+        saveResource("settings.yml", false);
     }
 
     public void registerListeners() {
@@ -130,12 +143,20 @@ public class GenderPlugin extends JavaPlugin {
         FileConfiguration c = new YamlConfiguration();
         try {
             c.load(messagesFile);
+            for (String key : c.getKeys(false)) {
+                Messenger.messagesCache.put(key, c.getString(key));
+            }
+            //Load missing messages
+            c.load(new BufferedReader(new InputStreamReader(getClassLoader().getResourceAsStream("messages.yml"))));
+            for (String key : c.getKeys(false)) {
+                if (!Messenger.messagesCache.containsKey(key)) {
+                    Messenger.messagesCache.put(key, c.getString(key));
+                }
+            }
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-        for (String key : c.getKeys(false)) {
-            Messenger.messagesCache.put(key, c.getString(key));
-        }
+
     }
 
     public void saveFile(String name) {
@@ -151,6 +172,10 @@ public class GenderPlugin extends JavaPlugin {
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void debug(Object... o) {
+        getLogger().log(Level.INFO, Arrays.toString(o));
     }
 
 }

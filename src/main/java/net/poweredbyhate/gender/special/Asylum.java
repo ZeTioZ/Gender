@@ -6,13 +6,17 @@ import java.util.UUID;
 
 public interface Asylum {
 
-    public void loadGenders();
+    void loadGenders();
 
-    public String getGender(Player p);
+    String getGender(Player p);
 
-    public String getGender(UUID uuid);
+    String getGender(UUID uuid);
 
-    public void setGender(UUID uuid, Gender gender);
+    void setGender(UUID uuid, Gender gender);
 
-    public void setGender(UUID uuid, String gender);
+    void setGender(UUID uuid, String gender);
+
+    boolean dbExport(String... args);
+
+    boolean dbImport(String... args);
 }

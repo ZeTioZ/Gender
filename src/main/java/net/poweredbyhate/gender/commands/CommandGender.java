@@ -10,11 +10,15 @@ import com.cloutteam.samjakob.gui.ItemBuilder;
 import com.cloutteam.samjakob.gui.buttons.GUIButton;
 import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.GenderPlugin;
+import net.poweredbyhate.gender.hospital.Flat;
+import net.poweredbyhate.gender.hospital.Sql;
 import net.poweredbyhate.gender.special.Gender;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -35,6 +39,30 @@ public class CommandGender extends BaseCommand {
         sender.sendMessage(m("helpMessage"));
     }
 
+    @Subcommand("export") @CommandPermission("gender.admin")
+    public void onExport(CommandSender sender, String type, String fileName) {
+        Flat flat = new Flat(plugin);
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aExporting database..."));
+        if (flat.dbExport(fileName.split("\\."))) {
+            sender.sendMessage(m("exportSuccess", fileName));
+        } else {
+            sender.sendMessage(m("exportFail"));
+        }
+    }
+
+    @Subcommand("import") @CommandPermission("gender.admin")
+    public void onImport(CommandSender sender, String fileName) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aImporting database..."));
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (plugin.getAsylum().dbImport(fileName.split("\\."))) {
+                sender.sendMessage(m("importSuccess"));
+                plugin.getAsylum().loadGenders();
+            } else {
+                sender.sendMessage(m("importFail"));
+            }
+        });
+    }
+
     @Subcommand("info|i")
     public void onInfo(Player sender, String gender) {
         Gender g = plugin.goMental().getGender(gender);
@@ -43,7 +71,6 @@ public class CommandGender extends BaseCommand {
         } else {
             sender.sendMessage(m("noGender", gender));
         }
-
     }
 
     @Subcommand("check|show")
@@ -67,6 +94,10 @@ public class CommandGender extends BaseCommand {
 
     @Subcommand("gui|list") @CommandPermission("gender.guilist|gender.list")
     public void onList(Player sender) {
+        if (plugin.goMental().getDatabase().size() <= 1) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThere is currently no genders in the database.")); //temp solution until we move api
+            return;
+        }
         PaginatedGUI menu = new PaginatedGUI(m("guiName").replace("{SIZE}", String.valueOf(plugin.goMental().getDatabase().keySet().size())));
         for (Gender g : plugin.goMental().getGenders()) {
             if (g.isPublic()) {

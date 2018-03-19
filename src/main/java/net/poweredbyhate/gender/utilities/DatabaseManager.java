@@ -1,55 +1,40 @@
 package net.poweredbyhate.gender.utilities;
 
+import co.aikar.idb.DB;
+import co.aikar.idb.Database;
+import co.aikar.idb.DatabaseOptions;
+import co.aikar.idb.PooledDatabaseOptions;
 import net.poweredbyhate.gender.GenderPlugin;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-//https://git.io/vxfX9
 public class DatabaseManager {
 
-    private List<Connection> connections = new ArrayList<Connection>();
     private GenderPlugin plugin;
+    private String host;
     private String database;
     private String user;
     private String pass;
 
-    public DatabaseManager(GenderPlugin plugin, String database, String user, String pass) {
+    public DatabaseManager(GenderPlugin plugin, String host, String user, String pass, String database) {
         this.plugin = plugin;
+        this.host = host;
         this.database = database;
         this.user = user;
         this.pass = pass;
+        make();
     }
 
-    public synchronized Connection getConnection() {
-        for (int i = 0; i < connections.size(); i++) {
-            Connection c = connections.get(i);
-            try {
-                if (c.isValid(2) && !c.isClosed()) {
-                    return c;
-                } else {
-                    connections.remove(c);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                connections.remove(c);
-            }
-        }
-
-        Connection c = runConnection();
-        if (c != null) connections.add(c);
-        return c;
+    private void make() {
+        Database db = PooledDatabaseOptions
+                .builder()
+                .options(
+                        DatabaseOptions.builder()
+                                .mysql(user,pass,database,host)
+                                .build()
+                ).createHikariDatabase();
+        DB.setGlobalDatabase(db);
     }
 
-    private Connection runConnection() {
-        try {
-            return DriverManager.getConnection(database, user, pass);
-        } catch (SQLException ex) {
-            plugin.getLogger().severe("Cannot into SQL " + ex);
-            return null;
-        }
+    public void unmake() {
+        DB.close();
     }
 }
