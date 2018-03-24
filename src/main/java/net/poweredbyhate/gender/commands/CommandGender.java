@@ -51,16 +51,34 @@ public class CommandGender extends BaseCommand {
     }
 
     @Subcommand("import") @CommandPermission("gender.admin")
-    public void onImport(CommandSender sender, String fileName) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aImporting database..."));
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (plugin.getAsylum().dbImport(fileName.split("\\."))) {
-                sender.sendMessage(m("importSuccess"));
-                plugin.getAsylum().loadGenders();
-            } else {
-                sender.sendMessage(m("importFail"));
-            }
-        });
+    public void onImport(CommandSender sender, String type, String fileName) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aImporting to database..."));
+
+        if (type.equalsIgnoreCase("pack")) {
+            Sql sql = new Sql(plugin);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (sql.importPack(fileName.split("\\."))) {
+                    sender.sendMessage(m("importSuccess"));
+                    plugin.getAsylum().loadGenders();
+                } else {
+                    sender.sendMessage(m("importFail"));
+                }
+            });
+            return;
+        }
+
+        if (type.equalsIgnoreCase("database")) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (plugin.getAsylum().dbImport(fileName.split("\\."))) {
+                    sender.sendMessage(m("importSuccess"));
+                    plugin.getAsylum().loadGenders();
+                } else {
+                    sender.sendMessage(m("importFail"));
+                }
+            });
+            return;
+        }
+        sender.sendMessage(m("helpMessage"));
     }
 
     @Subcommand("info|i")

@@ -42,6 +42,9 @@ public class MentalIllness {
     }
 
     public void imagine(Gender g) {
+        if (mentalillness.containsKey(g.getName().toLowerCase())) {
+            return;
+        }
         mentalillness.put(g.getName().toLowerCase(), g);
     }
 

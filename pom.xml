@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.poweredbyhate</groupId>
     <artifactId>Gender</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0</version>
     <build>
         <defaultGoal>clean package</defaultGoal>
         <finalName>${project.name}</finalName>
@@ -47,6 +47,7 @@
                             <shadedPattern>net.poweredbyhate.gender</shadedPattern>
                         </relocation>
                     </relocations>
+                        <minimizeJar>true</minimizeJar>
                 </configuration>
                 <executions>
                     <execution>
