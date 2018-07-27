@@ -19,4 +19,6 @@ public interface Asylum {
     boolean dbExport(String... args);
 
     boolean dbImport(String... args);
+
+    void reload();
 }

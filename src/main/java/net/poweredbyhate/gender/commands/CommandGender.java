@@ -93,7 +93,12 @@ public class CommandGender extends BaseCommand {
 
     @Subcommand("check|show")
     public void onCheck(Player sender, @Optional Player target) {
-        sender.sendMessage(m("checkGender", target.getName(), plugin.goMental().getSnowflake(target).getGender().getName()));
+        String gender = plugin.goMental().getSnowflake(target).getGender().getName();
+        if (gender.isEmpty()) {
+            sender.sendMessage(m("notIdentified", target.getName(), gender));
+        } else {
+            sender.sendMessage(m("checkGender", target.getName(), gender));
+        }
     }
 
     @Subcommand("set")
@@ -110,7 +115,7 @@ public class CommandGender extends BaseCommand {
         }
     }
 
-    @Subcommand("gui|list") @CommandPermission("gender.guilist|gender.list")
+    @Subcommand("gui|list") @CommandPermission("gender.list")
     public void onList(Player sender) {
         if (plugin.goMental().getDatabase().size() <= 1) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThere is currently no genders in the database.")); //temp solution until we move api
@@ -135,6 +140,11 @@ public class CommandGender extends BaseCommand {
         genderInfo.setListener(event ->  event.setCancelled(true));
         menu.setToolbarItem(0, genderInfo);
         sender.openInventory(menu.getInventory());
+    }
+
+    @Subcommand("reload") @CommandPermission("gender.admin")
+    public void onReload() {
+        plugin.reload();
     }
 
     private int getNotRandomInt() {

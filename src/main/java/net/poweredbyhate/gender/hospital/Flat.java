@@ -27,6 +27,11 @@ public class Flat implements Asylum {
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void loadGenders() {
         Gender gender = new Gender("", "Null gender", "");
         gender.setPublic(false);

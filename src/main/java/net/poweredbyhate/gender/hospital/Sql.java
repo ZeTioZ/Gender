@@ -35,6 +35,11 @@ public class Sql implements Asylum {
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void loadGenders() {
         Gender nullGender = new Gender("", "Null gender", "");
         nullGender.setPublic(false);

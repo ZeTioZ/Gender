@@ -16,7 +16,7 @@ public class Settings {
         FileConfiguration c = new YamlConfiguration();
         try {
             c.load(settingsFile);
-        } catch (IOException | InvalidConfigurationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return c;

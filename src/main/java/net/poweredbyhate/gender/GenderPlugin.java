@@ -174,6 +174,10 @@ public class GenderPlugin extends JavaPlugin {
         }
     }
 
+    public void reload() {
+        loadMessagesCache();
+    }
+
     public void debug(Object... o) {
         getLogger().log(Level.INFO, Arrays.toString(o));
     }
