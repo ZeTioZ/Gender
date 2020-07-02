@@ -34,7 +34,4 @@ public class DatabaseManager {
         DB.setGlobalDatabase(db);
     }
 
-    public void unmake() {
-        DB.close();
-    }
 }

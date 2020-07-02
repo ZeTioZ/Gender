@@ -45,6 +45,7 @@ public class Flat implements Asylum {
             plugin.saveFile("BasicPack.yml");
             plugin.saveFile("ElementsPack.yml");
             plugin.saveFile("HogwartsPack.yml");
+            plugin.saveFile("ShapesPack.yml");
         }
         try {
             Files.walk(Paths.get(folder.getAbsolutePath())).filter(file -> file.getFileName().toString().endsWith(".yml")).collect(Collectors.toList()).forEach(this::loadData);

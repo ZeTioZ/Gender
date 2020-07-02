@@ -3,5 +3,7 @@
 #genders:
 #  Male:
 #    description: "Male Gender"
+#    pronoun: 'He'
 #  Female:
 #    description: "Female Gender"
+#    pronoun: 'She'

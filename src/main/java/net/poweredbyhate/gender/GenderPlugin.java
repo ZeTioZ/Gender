@@ -2,7 +2,6 @@ package net.poweredbyhate.gender;
 
 import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.CommandReplacements;
-import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 import net.poweredbyhate.gender.commands.CommandGender;
 import net.poweredbyhate.gender.hospital.Flat;
 import net.poweredbyhate.gender.hospital.Sql;
@@ -50,7 +49,6 @@ public class GenderPlugin extends JavaPlugin {
         makeDatabase();
         mentalIllness = new MentalIllness(this, asylum);
         metrics = new Metrics(this);
-        PaginatedGUI.prepare(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this, "gender").hook();
         }
@@ -60,10 +58,6 @@ public class GenderPlugin extends JavaPlugin {
         asylum.loadGenders();
         loadCustomChart();
         loadMessagesCache();
-    }
-
-    public void onDisable() {
-        databaseManager.unmake();
     }
 
     public void updateCheck() {

@@ -4,6 +4,19 @@
 baseCommand: "gender|g|race"
 
 #
+# Matrix controls the GUI format
+# b = Back button
+# f = Forward button
+# x = genders
+# Empty space is filler
+# Max column 6 | Max row 9
+#
+defaultMatrix: true
+matrix:
+  - '         '
+  - ' xxxxxxx '
+  - 'b       f'
+#
 # This feature is somewhat implemented.
 #
 database:

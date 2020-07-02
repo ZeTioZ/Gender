@@ -27,3 +27,8 @@ genders:
   Sock:
     description: "Sock gender"
     pronoun: "Sox"
+  Choco:
+    description: "https://youtu.be/1zIVL7jFI-E "
+    pronoun: "dum"
+  ClassLoader:
+    description: "A gender responsible for loading classes"

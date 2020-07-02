@@ -6,9 +6,10 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
-import com.cloutteam.samjakob.gui.ItemBuilder;
-import com.cloutteam.samjakob.gui.buttons.GUIButton;
-import com.cloutteam.samjakob.gui.types.PaginatedGUI;
+import de.themoep.inventorygui.GuiElementGroup;
+import de.themoep.inventorygui.GuiPageElement;
+import de.themoep.inventorygui.InventoryGui;
+import de.themoep.inventorygui.StaticGuiElement;
 import net.poweredbyhate.gender.GenderPlugin;
 import net.poweredbyhate.gender.hospital.Flat;
 import net.poweredbyhate.gender.hospital.Sql;
@@ -17,12 +18,18 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
 import static net.poweredbyhate.gender.utilities.Messenger.m;
 
 @CommandAlias("%gender")
@@ -117,37 +124,56 @@ public class CommandGender extends BaseCommand {
 
     @Subcommand("gui|list") @CommandPermission("gender.list")
     public void onList(Player sender) {
-        if (plugin.goMental().getDatabase().size() <= 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThere is currently no genders in the database.")); //temp solution until we move api
-            return;
-        }
-        PaginatedGUI menu = new PaginatedGUI(m("guiName").replace("{SIZE}", String.valueOf(plugin.goMental().getDatabase().keySet().size())));
+        GuiElementGroup group = new GuiElementGroup('x');
+        InventoryGui gui = new InventoryGui(plugin, sender, m("guiName").replace("{SIZE}", String.valueOf(plugin.goMental().getDatabase().keySet().size())), buildMatrix(plugin.goMental().getDatabase().size()));
+
         for (Gender g : plugin.goMental().getGenders()) {
             if (g.isPublic()) {
-                GUIButton button = new GUIButton(ItemBuilder.start(Material.WOOL).data((short) getNotRandomInt()).name("&a"+g.getName()).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());
-                button.setListener(event -> {
-                    event.setCancelled(true);
-                    if (event.getCurrentItem().hasItemMeta()) {
-                        sender.performCommand("gender set " + ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
-                    }
-                    event.getWhoClicked().closeInventory();
-                });
-                menu.addButton(button);
+                List<String> infos = new ArrayList<>();
+                infos.add(g.getName());
+                infos.addAll(Arrays.asList(WordUtils.wrap(g.getDescription(), 50).split(System.lineSeparator())));
+                Wool wool = new Wool(Material.WHITE_WOOL);
+                wool.setColor(DyeColor.values()[ThreadLocalRandom.current().nextInt(DyeColor.values().length+1)]);
+                group.addElement(new StaticGuiElement('x',
+                        new ItemStack(wool.getItemType(), 1),
+                        click -> {
+                            sender.performCommand("gender set " + g.getName());
+                            return true;
+                        },
+                        infos.toArray((new String[0]))
+                ));
             }
         }
-        Gender g = plugin.goMental().getSnowflake(sender).getGender();
-        GUIButton genderInfo = new GUIButton(ItemBuilder.start(Material.BOOK).name(m("guiGenderInfo", g.getName())).lore(Arrays.asList(WordUtils.wrap(ChatColor.translateAlternateColorCodes('&',g.getDescription()), 50).split(System.lineSeparator()))).build());
-        genderInfo.setListener(event ->  event.setCancelled(true));
-        menu.setToolbarItem(0, genderInfo);
-        sender.openInventory(menu.getInventory());
+
+        gui.addElement(new GuiPageElement('b', new ItemStack(Material.COAL, 1), GuiPageElement.PageAction.PREVIOUS, "&cPREVIOUS"));
+        gui.addElement(new GuiPageElement('f', new ItemStack(Material.CHARCOAL, 1), GuiPageElement.PageAction.NEXT, "&aNEXT"));
+        gui.setFiller(new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1));
+        group.setFiller(gui.getFiller());
+        gui.addElement(group);
+        gui.show(sender);
+    }
+
+    public String[] buildMatrix(int i) {
+        List<String> matrix = new ArrayList<>();
+        matrix.add("         ");
+        matrix.add(" xxxxxxx ");
+        if (i >= 8) {
+            matrix.add(" xxxxxxx ");
+        }
+        if (i >= 15) {
+            matrix.add(" xxxxxxx ");
+        }
+        if (i >= 22) {
+            matrix.add(" xxxxxxx ");
+            matrix.add("b       f");
+            return matrix.toArray(new String[0]);
+        }
+        matrix.add("         ");
+        return matrix.toArray(new String[0]);
     }
 
     @Subcommand("reload") @CommandPermission("gender.admin")
     public void onReload() {
         plugin.reload();
-    }
-
-    private int getNotRandomInt() {
-        return ThreadLocalRandom.current().nextInt(0,15);
     }
 }
