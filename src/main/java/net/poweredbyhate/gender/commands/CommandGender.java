@@ -132,10 +132,9 @@ public class CommandGender extends BaseCommand {
                 List<String> infos = new ArrayList<>();
                 infos.add(g.getName());
                 infos.addAll(Arrays.asList(WordUtils.wrap(g.getDescription(), 50).split(System.lineSeparator())));
-                Wool wool = new Wool(Material.WHITE_WOOL);
-                wool.setColor(DyeColor.values()[ThreadLocalRandom.current().nextInt(DyeColor.values().length+1)]);
+                ItemStack stack = new ItemStack(Material.valueOf(DyeColor.values()[ThreadLocalRandom.current().nextInt(DyeColor.values().length)].name()+"_WOOL"), 1);
                 group.addElement(new StaticGuiElement('x',
-                        new ItemStack(wool.getItemType(), 1),
+                        new ItemStack(stack.getType(), 1),
                         click -> {
                             sender.performCommand("gender set " + g.getName());
                             return true;
