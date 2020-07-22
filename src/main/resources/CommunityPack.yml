@@ -32,3 +32,5 @@ genders:
     pronoun: "dum"
   ClassLoader:
     description: "A gender responsible for loading classes"
+  Chunky:
+    description: "An above average volume"
