@@ -50,7 +50,7 @@ public class GenderPlugin extends JavaPlugin {
         mentalIllness = new MentalIllness(this, asylum);
         metrics = new Metrics(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderListener(this, "gender").hook();
+            new PlaceholderListener(this).register();
         }
         registerListeners();
         registerCommand();
