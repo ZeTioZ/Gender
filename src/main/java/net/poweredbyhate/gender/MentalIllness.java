@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -18,8 +19,8 @@ public class MentalIllness {
 
     private GenderPlugin plugin;
     private Asylum asylum;
-    private HashMap<String, Gender> mentalillness;
-    private HashMap<UUID, Snowflake> snowflakes;
+    private Map<String, Gender> mentalillness;
+    private Map<UUID, Snowflake> snowflakes;
 
     public MentalIllness(GenderPlugin plugin, Asylum asylum) {
         this.plugin = plugin;
@@ -56,7 +57,7 @@ public class MentalIllness {
         return mentalillness.values();
     }
 
-    public HashMap getDatabase() {
+    public Map<String, Gender> getDatabase() {
         return mentalillness;
     }
 

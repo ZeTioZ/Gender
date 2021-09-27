@@ -6,27 +6,25 @@ import net.poweredbyhate.gender.commands.CommandGender;
 import net.poweredbyhate.gender.hospital.Flat;
 import net.poweredbyhate.gender.hospital.Sql;
 import net.poweredbyhate.gender.listeners.ChatListener;
+import net.poweredbyhate.gender.listeners.CommandPreProcessListener;
 import net.poweredbyhate.gender.listeners.PlaceholderListener;
+import net.poweredbyhate.gender.listeners.PlayerInteractAtEntityListener;
 import net.poweredbyhate.gender.listeners.PlayerListener;
 import net.poweredbyhate.gender.special.Asylum;
 import net.poweredbyhate.gender.utilities.DatabaseManager;
 import net.poweredbyhate.gender.utilities.Messenger;
 import net.poweredbyhate.gender.utilities.Settings;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.inventivetalent.update.spigot.SpigotUpdater;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 /**
@@ -39,7 +37,6 @@ public class GenderPlugin extends JavaPlugin {
     public static GenderPlugin instance;
     private MentalIllness mentalIllness;
     private DatabaseManager databaseManager;
-    private Metrics metrics;
     private Asylum asylum;
 
     public void onEnable() {
@@ -48,24 +45,13 @@ public class GenderPlugin extends JavaPlugin {
         instance = this;
         makeDatabase();
         mentalIllness = new MentalIllness(this, asylum);
-        metrics = new Metrics(this);
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderListener(this).register();
         }
         registerListeners();
         registerCommand();
-        updateCheck();
         asylum.loadGenders();
-        loadCustomChart();
         loadMessagesCache();
-    }
-
-    public void updateCheck() {
-        try {
-            new SpigotUpdater(this, 33217);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void registerCommand() {
@@ -109,19 +95,8 @@ public class GenderPlugin extends JavaPlugin {
     public void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-    }
-
-    public void loadCustomChart() {
-        getLogger().log(Level.INFO,"Loading: Custom Charts");
-        metrics.addCustomChart(new Metrics.AdvancedPie("le_popular_genders", () -> {
-            Map<String, Integer> genderCount = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            for (String s : getConfig().getKeys(false)) {
-                String gender = getConfig().getString(s);
-                int count = genderCount.getOrDefault(gender, 0);
-                genderCount.put(gender, count + 1);
-            }
-            return genderCount;
-        }));
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractAtEntityListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new CommandPreProcessListener(), this);
     }
 
     public MentalIllness goMental() {

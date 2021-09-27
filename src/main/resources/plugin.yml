@@ -1,6 +1,6 @@
 name: Gender
 version: ${project.version}
-author: null.entity
+author: ZeTioZ
 main: net.poweredbyhate.gender.GenderPlugin
 softdepend: [PlaceholderAPI]
-api-version: 1.13
+api-version: 1.17
